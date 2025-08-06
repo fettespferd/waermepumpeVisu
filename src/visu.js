@@ -95,130 +95,157 @@ const VaillantHeatPumpVisualizer = () => {
     return content[targetAudience];
   };
 
-  // Kinder-Visualisierung - Verbessert für dunkles Theme
+  // Kinder-Visualisierung - Verbesserte Version
   const KidsVisualization = () => (
-    <div className="relative rounded-2xl p-6 h-96 overflow-hidden border border-gray-200" style={{background: 'linear-gradient(to bottom, #a78bfa, #c4b5fd, #f472b6)'}}>
+    <div className="relative rounded-2xl p-6 h-96 overflow-hidden border border-gray-200" style={{background: 'linear-gradient(135deg, #a78bfa, #c4b5fd, #f472b6)'}}>
       {/* Sonne */}
-      <div className="absolute top-4 right-4 w-12 h-12 bg-yellow-400 rounded-full animate-pulse shadow-lg">
-        <div className="absolute inset-2 bg-yellow-300 rounded-full flex items-center justify-center">
+      <div className="absolute top-4 right-4 w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full animate-pulse shadow-xl">
+        <div className="absolute inset-3 bg-yellow-300 rounded-full flex items-center justify-center text-2xl">
           ☀️
         </div>
       </div>
       
-      {/* Großes Haus */}
-      <div className="absolute bottom-6 right-6 w-32 h-24 bg-white rounded-xl border-4 border-pink-400 shadow-xl">
-        <div className="w-full h-4 bg-red-500 rounded-t-lg"></div>
+      {/* Großes Haus - Verbessert */}
+      <div className="absolute bottom-6 right-6 w-36 h-28 bg-white rounded-2xl border-4 border-pink-400 shadow-2xl">
+        <div className="w-full h-5 bg-gradient-to-r from-red-500 to-orange-500 rounded-t-xl"></div>
+        <div className="p-4 text-center">
+          <div className="text-3xl mb-2">🏠</div>
+          <div className="text-xl font-bold text-gray-800">{insideTemp}°C</div>
+          <div className="text-sm text-pink-600 font-bold">Warm & gemütlich!</div>
+        </div>
+      </div>
+
+      {/* Wärmepumpe als freundlicher Roboter - Verbessert */}
+      <div className="absolute bottom-6 left-6 w-28 h-24 bg-white rounded-2xl border-4 border-blue-400 shadow-2xl">
         <div className="p-3 text-center">
-          <div className="text-2xl mb-1">🏠</div>
-          <div className="text-lg font-bold text-gray-800">{insideTemp}°C</div>
-          <div className="text-xs text-pink-600 font-bold">Warm & gemütlich!</div>
+          <div className="text-3xl mb-2">🤖</div>
+          <div className="text-sm font-bold text-blue-800">Wärme-Helfer</div>
+          <div className="text-xs text-blue-600 mt-1">COP: {calculateAdvancedCOP()}</div>
         </div>
       </div>
 
-      {/* Wärmepumpe als freundlicher Roboter */}
-      <div className="absolute bottom-6 left-6 w-24 h-20 bg-white rounded-2xl border-4 border-blue-400 shadow-xl">
-        <div className="p-2 text-center">
-          <div className="text-2xl mb-1">🤖</div>
-          <div className="text-xs font-bold text-blue-800">Wärme-Helfer</div>
-        </div>
-      </div>
-
-      {/* Animierte Wärme-Herzen */}
-      <div className="absolute bottom-16 left-16 w-24 h-4">
-        {[...Array(6)].map((_, i) => (
+      {/* Verbesserte animierte Wärme-Herzen */}
+      <div className="absolute bottom-20 left-20 w-32 h-6">
+        {[...Array(8)].map((_, i) => (
           <div
             key={i}
             className={`absolute text-2xl transition-all duration-1000 drop-shadow-lg ${
-              animationPhase >= (i % 4) ? 'opacity-100 translate-x-6' : 'opacity-0'
+              animationPhase >= (i % 4) ? 'opacity-100 translate-x-8' : 'opacity-0'
             }`}
-            style={{ left: `${i * 16}px` }}
+            style={{ left: `${i * 20}px` }}
           >
             ❤️
           </div>
         ))}
       </div>
 
-      {/* PV als Solarblumen */}
+      {/* PV als Solarblumen - Verbessert */}
       {pvSystem && (
         <div className="absolute top-12 right-12">
-          <div className="text-3xl animate-bounce drop-shadow-lg">🌻🌻</div>
-          <div className="text-xs text-center text-green-800 font-bold bg-white bg-opacity-80 rounded px-2 py-1">Solar-Power!</div>
+          <div className="text-4xl animate-bounce drop-shadow-lg">🌻🌻🌻</div>
+          <div className="text-sm text-center text-green-800 font-bold bg-white bg-opacity-90 rounded-xl px-3 py-2 shadow-lg">Solar-Power!</div>
         </div>
       )}
 
-      {/* Erklärung */}
-      <div className="absolute bottom-2 left-2 right-2 bg-white bg-opacity-95 rounded-xl p-3 text-center shadow-lg border border-gray-300">
+      {/* Temperaturanzeige */}
+      <div className="absolute top-6 left-6 bg-white bg-opacity-90 rounded-xl p-3 shadow-lg border border-gray-200">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-2xl">❄️</span>
+          <span className="text-sm font-bold text-blue-600">Draußen</span>
+        </div>
+        <div className="text-lg font-bold text-blue-600">{outsideTemp}°C</div>
+      </div>
+
+      {/* Erklärung - Verbessert */}
+      <div className="absolute bottom-2 left-2 right-2 bg-white bg-opacity-95 rounded-xl p-4 text-center shadow-lg border border-gray-300">
         <div className="text-sm font-bold text-purple-800">
           {outsideTemp < 0 ? "Auch bei Kälte finde ich Wärme! ❄️➡️🔥" : 
            outsideTemp < 10 ? "Ich sammle Wärme aus der Luft! 🌬️➡️🏠" :
            "Bei warmen Wetter arbeite ich besonders gut! ☀️➡️😊"}
         </div>
+        <div className="text-xs text-gray-600 mt-2">
+          Kosten: €{calculateDetailedCosts().daily} pro Tag
+        </div>
       </div>
     </div>
   );
 
-  // Erwachsenen-Visualisierung
+  // Erwachsenen-Visualisierung - Verbesserte Version
   const AdultsVisualization = () => (
-    <div className="relative rounded-xl p-6 h-96 overflow-hidden border-2 border-gray-200" style={{background: 'linear-gradient(to bottom right, #dbeafe, #ffffff, #dcfce7)'}}>
+    <div className="relative rounded-xl p-6 h-96 overflow-hidden border-2 border-gray-200" style={{background: 'linear-gradient(135deg, #f8fafc, #e2e8f0, #f1f5f9)'}}>
       {/* Haus */}
-      <div className="absolute bottom-8 right-8 w-28 h-22 bg-gray-100 rounded-lg border-2 border-gray-300 shadow-lg">
-        <div className="w-full h-3 bg-red-600 rounded-t-lg"></div>
-        <div className="p-3 text-center">
-          <Home className="w-8 h-8 mx-auto text-gray-600 mb-1" />
-          <div className="text-sm font-bold text-gray-800">{insideTemp}°C</div>
-          <div className="text-xs text-gray-600">{houseSize}m²</div>
+      <div className="absolute bottom-8 right-8 w-32 h-24 bg-white rounded-xl border-2 border-gray-300 shadow-lg">
+        <div className="w-full h-4 bg-gradient-to-r from-red-500 to-orange-500 rounded-t-xl"></div>
+        <div className="p-4 text-center">
+          <Home className="w-10 h-10 mx-auto text-gray-600 mb-2" />
+          <div className="text-lg font-bold text-gray-800">{insideTemp}°C</div>
+          <div className="text-sm text-gray-600">{houseSize}m²</div>
         </div>
       </div>
 
       {/* Wärmepumpe */}
-      <div className="absolute bottom-8 left-8 w-24 h-20 bg-red-600 rounded-lg shadow-lg border-2 border-red-700">
-        <div className="p-2 text-center text-white">
-          <div className="text-lg font-bold">V</div>
-          <div className="text-xs">{heatPumpModel}</div>
-          <div className="flex justify-center mt-1">
-            <div className={`w-2 h-2 rounded-full ${calculateAdvancedCOP() > 3 ? 'bg-green-400' : 'bg-yellow-400'} animate-pulse`}></div>
+      <div className="absolute bottom-8 left-8 w-28 h-24 bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-lg border-2 border-red-700">
+        <div className="p-3 text-center text-white">
+          <div className="text-xl font-bold mb-1">V</div>
+          <div className="text-xs mb-2">{heatPumpModel}</div>
+          <div className="flex justify-center">
+            <div className={`w-3 h-3 rounded-full ${calculateAdvancedCOP() > 3 ? 'bg-green-400' : 'bg-yellow-400'} animate-pulse shadow-lg`}></div>
           </div>
         </div>
       </div>
 
-      {/* Technischer Wärmestrom */}
-      <div className="absolute bottom-14 left-20 w-20 h-2 bg-gradient-to-r from-blue-400 to-red-400 rounded-full opacity-75">
-        <div className="h-full bg-gradient-to-r from-orange-400 to-red-500 rounded-full animate-pulse"></div>
+      {/* Verbesserter Wärmestrom */}
+      <div className="absolute bottom-16 left-24 w-24 h-3 bg-gradient-to-r from-blue-400 via-orange-400 to-red-500 rounded-full opacity-90 shadow-md">
+        <div className="h-full bg-gradient-to-r from-orange-400 to-red-500 rounded-full animate-pulse relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse"></div>
+        </div>
       </div>
 
-      {/* PV-Anlage */}
+      {/* PV-Anlage - Verbessert */}
       {pvSystem && (
-        <div className="absolute top-6 right-12 w-20 h-12 bg-blue-900 rounded-md border border-blue-700 shadow-md">
-          <div className="grid grid-cols-5 gap-0.5 p-1">
-            {[...Array(15)].map((_, i) => (
-              <div key={i} className="w-1.5 h-1.5 bg-blue-600 animate-pulse"></div>
+        <div className="absolute top-6 right-12 w-24 h-16 bg-gradient-to-br from-blue-900 to-blue-800 rounded-lg border border-blue-700 shadow-lg">
+          <div className="grid grid-cols-6 gap-1 p-2">
+            {[...Array(18)].map((_, i) => (
+              <div key={i} className="w-2 h-2 bg-blue-400 rounded-sm animate-pulse" style={{animationDelay: `${i * 0.1}s`}}></div>
             ))}
           </div>
           <div className="text-xs text-center text-white font-medium">Solar</div>
         </div>
       )}
 
-      {/* Außentemperatur-Display */}
-      <div className="absolute top-6 left-6 bg-white rounded-lg p-3 shadow-md border">
-        <div className="flex items-center gap-2 mb-2">
-          <Thermometer className="w-4 h-4 text-blue-500" />
-          <span className="text-sm font-medium">Außen</span>
+      {/* Außentemperatur-Display - Verbessert */}
+      <div className="absolute top-6 left-6 bg-white rounded-xl p-4 shadow-lg border border-gray-200">
+        <div className="flex items-center gap-2 mb-3">
+          <Snowflake className="w-5 h-5 text-blue-500" />
+          <span className="text-sm font-semibold">Außen</span>
         </div>
-        <div className="text-lg font-bold text-blue-600">{outsideTemp}°C</div>
+        <div className="text-xl font-bold text-blue-600">{outsideTemp}°C</div>
       </div>
 
-      {/* Effizienz-Indikator */}
-      <div className="absolute top-20 left-6 bg-white rounded-lg p-2 shadow-md border">
-        <div className="text-xs text-gray-600">COP</div>
-        <div className={`text-lg font-bold ${calculateAdvancedCOP() > 3 ? 'text-green-600' : 'text-yellow-600'}`}>
+      {/* Effizienz-Indikator - Verbessert */}
+      <div className="absolute top-24 left-6 bg-white rounded-xl p-3 shadow-lg border border-gray-200">
+        <div className="text-xs text-gray-600 mb-1">COP</div>
+        <div className={`text-xl font-bold ${calculateAdvancedCOP() > 3 ? 'text-green-600' : 'text-yellow-600'}`}>
           {calculateAdvancedCOP()}
         </div>
+        <div className="text-xs text-gray-500 mt-1">
+          {calculateAdvancedCOP() > 3 ? 'Sehr gut' : 'Gut'}
+        </div>
       </div>
 
-      {/* Informationsbox */}
-      <div className="absolute bottom-2 left-2 right-2 bg-white bg-opacity-95 rounded-lg p-3 border">
+      {/* Leistungsanzeige */}
+      <div className="absolute top-6 left-1/2 transform -translate-x-1/2 bg-white rounded-xl p-3 shadow-lg border border-gray-200">
+        <div className="text-xs text-gray-600 mb-1">Leistung</div>
+        <div className="text-lg font-bold text-purple-600">{calculatePower()} kW</div>
+      </div>
+
+      {/* Informationsbox - Verbessert */}
+      <div className="absolute bottom-2 left-2 right-2 bg-white bg-opacity-95 rounded-xl p-4 border border-gray-200 shadow-lg">
         <div className="text-sm text-gray-700 text-center">
           <strong>Ihre Ersparnis:</strong> Bis zu €{Math.round(calculateDetailedCosts().monthly * 2.5)} pro Monat gegenüber Gasheizung
+        </div>
+        <div className="text-xs text-gray-500 text-center mt-1">
+          COP: {calculateAdvancedCOP()} | Strom: {Math.round((calculatePower() / calculateAdvancedCOP()) * 100) / 100} kW
         </div>
       </div>
     </div>
@@ -532,59 +559,76 @@ const VaillantHeatPumpVisualizer = () => {
     );
   };
 
-  // Parameter-Komponenten basierend auf Zielgruppe
+  // Parameter-Komponenten basierend auf Zielgruppe - Verbesserte Version
   const renderParameters = () => {
     const content = getAudienceContent();
     
     return (
-      <div className="space-y-4">
+      <div className="space-y-6">
         {/* Grundparameter für alle */}
         {content.parameters.includes('outsideTemp') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              <Snowflake className="w-4 h-4 inline mr-1 text-blue-500" />
-              {targetAudience === 'kids' ? 'Temperatur draußen' : 'Außentemperatur'}: {outsideTemp}°C
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Snowflake className="w-5 h-5 text-blue-500" />
+              <span className="font-semibold text-gray-800">
+                {targetAudience === 'kids' ? 'Temperatur draußen' : 'Außentemperatur'}
+              </span>
+              <span className="value-display">{outsideTemp}°C</span>
             </label>
-            <input
-              type="range"
-              min="-20"
-              max="35"
-              value={outsideTemp}
-              onChange={(e) => setOutsideTemp(Number(e.target.value))}
-              className="w-full cursor-pointer"
-            />
-            <div className="flex justify-between text-xs text-slate-500 mt-1">
-              <span>-20°C</span>
-              <span>35°C</span>
+            <div className="range-container">
+              <input
+                type="range"
+                min="-20"
+                max="35"
+                value={outsideTemp}
+                onChange={(e) => setOutsideTemp(Number(e.target.value))}
+                className="w-full"
+              />
+              <div className="range-labels">
+                <span>-20°C</span>
+                <span>35°C</span>
+              </div>
             </div>
           </div>
         )}
 
         {content.parameters.includes('insideTemp') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              <Flame className="w-4 h-4 inline mr-1 text-red-500" />
-              {targetAudience === 'kids' ? 'Temperatur drinnen' : 'Wunschtemperatur'}: {insideTemp}°C
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Flame className="w-5 h-5 text-red-500" />
+              <span className="font-semibold text-gray-800">
+                {targetAudience === 'kids' ? 'Temperatur drinnen' : 'Wunschtemperatur'}
+              </span>
+              <span className="value-display">{insideTemp}°C</span>
             </label>
-            <input
-              type="range"
-              min="18"
-              max="24"
-              value={insideTemp}
-              onChange={(e) => setInsideTemp(Number(e.target.value))}
-              className="w-full cursor-pointer"
-            />
+            <div className="range-container">
+              <input
+                type="range"
+                min="18"
+                max="24"
+                value={insideTemp}
+                onChange={(e) => setInsideTemp(Number(e.target.value))}
+                className="w-full"
+              />
+              <div className="range-labels">
+                <span>18°C</span>
+                <span>24°C</span>
+              </div>
+            </div>
           </div>
         )}
 
         {/* Erweiterte Parameter für Erwachsene */}
         {content.parameters.includes('heatPumpModel') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Vaillant Modell</label>
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Settings className="w-5 h-5 text-indigo-500" />
+              <span className="font-semibold text-gray-800">Vaillant Modell</span>
+            </label>
             <select 
               value={heatPumpModel} 
               onChange={(e) => setHeatPumpModel(e.target.value)}
-              className="w-full p-2 rounded-md"
+              className="w-full"
             >
               <option value="aroTHERM">aroTHERM plus (Luft-Wasser)</option>
               <option value="geoTHERM">geoTHERM (Sole-Wasser)</option>
@@ -594,102 +638,137 @@ const VaillantHeatPumpVisualizer = () => {
         )}
 
         {content.parameters.includes('houseSize') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              <Home className="w-4 h-4 inline mr-1 text-green-400" />
-              Wohnfläche: {houseSize}m²
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Home className="w-5 h-5 text-green-500" />
+              <span className="font-semibold text-gray-800">Wohnfläche</span>
+              <span className="value-display">{houseSize}m²</span>
             </label>
-            <input
-              type="range"
-              min="80"
-              max="300"
-              value={houseSize}
-              onChange={(e) => setHouseSize(Number(e.target.value))}
-              className="w-full cursor-pointer"
-            />
+            <div className="range-container">
+              <input
+                type="range"
+                min="80"
+                max="300"
+                value={houseSize}
+                onChange={(e) => setHouseSize(Number(e.target.value))}
+                className="w-full"
+              />
+              <div className="range-labels">
+                <span>80m²</span>
+                <span>300m²</span>
+              </div>
+            </div>
           </div>
         )}
 
         {content.parameters.includes('electricityPrice') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              <Euro className="w-4 h-4 inline mr-1 text-yellow-400" />
-              Strompreis: €{electricityPrice}/kWh
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Euro className="w-5 h-5 text-yellow-500" />
+              <span className="font-semibold text-gray-800">Strompreis</span>
+              <span className="value-display">€{electricityPrice}/kWh</span>
             </label>
-            <input
-              type="range"
-              min="0.20"
-              max="0.50"
-              step="0.01"
-              value={electricityPrice}
-              onChange={(e) => setElectricityPrice(Number(e.target.value))}
-              className="w-full cursor-pointer"
-            />
+            <div className="range-container">
+              <input
+                type="range"
+                min="0.20"
+                max="0.50"
+                step="0.01"
+                value={electricityPrice}
+                onChange={(e) => setElectricityPrice(Number(e.target.value))}
+                className="w-full"
+              />
+              <div className="range-labels">
+                <span>€0.20</span>
+                <span>€0.50</span>
+              </div>
+            </div>
           </div>
         )}
 
         {/* Experten-Parameter */}
         {content.parameters.includes('humidity') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              <Droplets className="w-4 h-4 inline mr-1 text-blue-400" />
-              Luftfeuchtigkeit: {humidity}%
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Droplets className="w-5 h-5 text-blue-500" />
+              <span className="font-semibold text-gray-800">Luftfeuchtigkeit</span>
+              <span className="value-display">{humidity}%</span>
             </label>
-            <input
-              type="range"
-              min="30"
-              max="90"
-              value={humidity}
-              onChange={(e) => setHumidity(Number(e.target.value))}
-              className="w-full cursor-pointer"
-            />
+            <div className="range-container">
+              <input
+                type="range"
+                min="30"
+                max="90"
+                value={humidity}
+                onChange={(e) => setHumidity(Number(e.target.value))}
+                className="w-full"
+              />
+              <div className="range-labels">
+                <span>30%</span>
+                <span>90%</span>
+              </div>
+            </div>
           </div>
         )}
 
         {content.parameters.includes('windSpeed') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              <Wind className="w-4 h-4 inline mr-1 text-gray-400" />
-              Windgeschwindigkeit: {windSpeed} m/s
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Wind className="w-5 h-5 text-gray-500" />
+              <span className="font-semibold text-gray-800">Windgeschwindigkeit</span>
+              <span className="value-display">{windSpeed} m/s</span>
             </label>
-            <input
-              type="range"
-              min="0"
-              max="10"
-              value={windSpeed}
-              onChange={(e) => setWindSpeed(Number(e.target.value))}
-              className="w-full cursor-pointer"
-            />
+            <div className="range-container">
+              <input
+                type="range"
+                min="0"
+                max="10"
+                value={windSpeed}
+                onChange={(e) => setWindSpeed(Number(e.target.value))}
+                className="w-full"
+              />
+              <div className="range-labels">
+                <span>0 m/s</span>
+                <span>10 m/s</span>
+              </div>
+            </div>
           </div>
         )}
 
         {content.parameters.includes('heatingLoad') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              <Gauge className="w-4 h-4 inline mr-1 text-red-400" />
-              Heizlast: {heatingLoad} kW
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Gauge className="w-5 h-5 text-red-500" />
+              <span className="font-semibold text-gray-800">Heizlast</span>
+              <span className="value-display">{heatingLoad} kW</span>
             </label>
-            <input
-              type="range"
-              min="4"
-              max="20"
-              value={heatingLoad}
-              onChange={(e) => setHeatingLoad(Number(e.target.value))}
-              className="w-full cursor-pointer"
-            />
+            <div className="range-container">
+              <input
+                type="range"
+                min="4"
+                max="20"
+                value={heatingLoad}
+                onChange={(e) => setHeatingLoad(Number(e.target.value))}
+                className="w-full"
+              />
+              <div className="range-labels">
+                <span>4 kW</span>
+                <span>20 kW</span>
+              </div>
+            </div>
           </div>
         )}
 
         {content.parameters.includes('season') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              <Calendar className="w-4 h-4 inline mr-1 text-purple-400" />
-              Jahreszeit
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Calendar className="w-5 h-5 text-purple-500" />
+              <span className="font-semibold text-gray-800">Jahreszeit</span>
             </label>
             <select 
               value={season} 
               onChange={(e) => setSeason(e.target.value)}
-              className="w-full p-2 rounded-md"
+              className="w-full"
             >
               <option value="winter">Winter</option>
               <option value="spring">Frühling</option>
@@ -700,12 +779,15 @@ const VaillantHeatPumpVisualizer = () => {
         )}
 
         {content.parameters.includes('operatingMode') && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">Betriebsmodus</label>
+          <div className="parameter-card animate-slide-in">
+            <label className="flex items-center gap-2 mb-3">
+              <Settings className="w-5 h-5 text-indigo-500" />
+              <span className="font-semibold text-gray-800">Betriebsmodus</span>
+            </label>
             <select 
               value={operatingMode} 
               onChange={(e) => setOperatingMode(e.target.value)}
-              className="w-full p-2 rounded-md"
+              className="w-full"
             >
               <option value="heating">Heizen</option>
               <option value="cooling">Kühlen</option>
@@ -717,21 +799,19 @@ const VaillantHeatPumpVisualizer = () => {
 
         {/* PV-System für alle außer Kinder-Modus */}
         {content.parameters.includes('pvSystem') && (
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-slate-700 flex items-center gap-2">
-              <Sun className="w-4 h-4 text-yellow-400" />
-              {targetAudience === 'kids' ? 'Solar-Power' : 'PV-Anlage'}
-            </span>
-            <button
-              onClick={() => setPvSystem(!pvSystem)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                pvSystem ? 'bg-green-500' : 'bg-gray-600'
-              }`}
-            >
-              <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                pvSystem ? 'translate-x-6' : 'translate-x-1'
-              }`} />
-            </button>
+          <div className="parameter-card animate-slide-in">
+            <div className="flex items-center justify-between">
+              <label className="flex items-center gap-2">
+                <Sun className="w-5 h-5 text-yellow-500" />
+                <span className="font-semibold text-gray-800">
+                  {targetAudience === 'kids' ? 'Solar-Power' : 'PV-Anlage'}
+                </span>
+              </label>
+              <div 
+                className={`toggle-switch ${pvSystem ? 'active' : ''}`}
+                onClick={() => setPvSystem(!pvSystem)}
+              />
+            </div>
           </div>
         )}
       </div>
@@ -748,23 +828,23 @@ const VaillantHeatPumpVisualizer = () => {
         {/* Einfache KPIs für Kinder */}
         {content.kpis.includes('simple') && (
           <>
-            <div className="bg-white rounded-xl p-6 shadow-lg border-4 border-green-200">
-              <h3 className="text-lg font-bold text-green-600 mb-4 flex items-center gap-2">
+            <div className="kpi-card card-success animate-fade-in">
+              <h3 className="text-xl font-bold text-green-600 mb-6 flex items-center gap-3">
                 🌟 Super-Werte!
               </h3>
-              <div className="space-y-3">
-                <div className="bg-green-50 p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-green-800">{calculateAdvancedCOP()}</div>
-                  <div className="text-sm text-green-600">So gut arbeite ich!</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-green-50 p-4 rounded-xl border border-green-200 hover:bg-green-100 transition-colors">
+                  <div className="text-3xl font-bold text-green-800 mb-2">{calculateAdvancedCOP()}</div>
+                  <div className="text-sm text-green-600 font-medium">So gut arbeite ich!</div>
                 </div>
-                <div className="bg-blue-50 p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-800">€{costs.daily}</div>
-                  <div className="text-sm text-blue-600">Kosten pro Tag</div>
+                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200 hover:bg-blue-100 transition-colors">
+                  <div className="text-3xl font-bold text-blue-800 mb-2">€{costs.daily}</div>
+                  <div className="text-sm text-blue-600 font-medium">Kosten pro Tag</div>
                 </div>
                 {pvSystem && (
-                  <div className="bg-yellow-50 p-3 rounded-lg">
-                    <div className="text-2xl">🌱</div>
-                    <div className="text-sm text-yellow-600">Umweltfreundlich!</div>
+                  <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200 hover:bg-yellow-100 transition-colors">
+                    <div className="text-3xl mb-2">🌱</div>
+                    <div className="text-sm text-yellow-600 font-medium">Umweltfreundlich!</div>
                   </div>
                 )}
               </div>
@@ -774,64 +854,85 @@ const VaillantHeatPumpVisualizer = () => {
 
         {/* Standard KPIs für Erwachsene */}
         {content.kpis.includes('efficiency') && (
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-green-500" />
+          <div className="kpi-card card-primary animate-fade-in">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <TrendingUp className="w-6 h-6 text-green-500" />
               Effizienz
             </h3>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">COP-Wert</span>
-                <div className="flex items-center gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-gray-600">COP-Wert</span>
                   <div className={`px-3 py-1 rounded-full text-sm font-bold ${
-                    calculateAdvancedCOP() > 3.5 ? 'bg-green-100 text-green-800' : 
-                    calculateAdvancedCOP() > 2.5 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
+                    calculateAdvancedCOP() > 3.5 ? 'bg-green-500 text-white' : 
+                    calculateAdvancedCOP() > 2.5 ? 'bg-yellow-500 text-white' : 'bg-red-500 text-white'
                   }`}>
                     {calculateAdvancedCOP()}
                   </div>
                 </div>
+                <div className="text-2xl font-bold text-green-800">{calculateAdvancedCOP()}</div>
+                <div className="text-xs text-green-600 mt-1">
+                  {calculateAdvancedCOP() > 3.5 ? 'Sehr gut' : 
+                   calculateAdvancedCOP() > 2.5 ? 'Gut' : 'Verbesserungswürdig'}
+                </div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Heizleistung</span>
-                <span className="font-bold text-blue-600">{calculatePower()} kW</span>
+              
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-gray-600">Heizleistung</span>
+                </div>
+                <div className="text-2xl font-bold text-blue-800">{calculatePower()} kW</div>
+                <div className="text-xs text-blue-600 mt-1">Aktuelle Leistung</div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Stromverbrauch</span>
-                <span className="font-bold text-orange-600">{Math.round((calculatePower() / calculateAdvancedCOP()) * 100) / 100} kW</span>
+              
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium text-gray-600">Stromverbrauch</span>
+                </div>
+                <div className="text-2xl font-bold text-orange-800">{Math.round((calculatePower() / calculateAdvancedCOP()) * 100) / 100} kW</div>
+                <div className="text-xs text-orange-600 mt-1">Elektrische Leistung</div>
               </div>
             </div>
           </div>
         )}
 
         {content.kpis.includes('costs') && (
-          <div className="bg-white rounded-xl p-6 shadow-lg">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Euro className="w-5 h-5 text-green-600" />
+          <div className="kpi-card card-success animate-fade-in">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <Euro className="w-6 h-6 text-green-600" />
               Wirtschaftlichkeit
             </h3>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Tägl. Betriebskosten</span>
-                <span className="font-bold text-green-600">€{costs.daily}</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                <div className="text-sm font-medium text-gray-600 mb-2">Tägl. Betriebskosten</div>
+                <div className="text-2xl font-bold text-green-800">€{costs.daily}</div>
+                <div className="text-xs text-green-600 mt-1">Pro Tag</div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Monatlich</span>
-                <span className="font-bold text-green-600">€{costs.monthly}</span>
+              
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                <div className="text-sm font-medium text-gray-600 mb-2">Monatlich</div>
+                <div className="text-2xl font-bold text-blue-800">€{costs.monthly}</div>
+                <div className="text-xs text-blue-600 mt-1">30 Tage</div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Jährlich</span>
-                <span className="font-bold text-green-600">€{costs.yearly}</span>
+              
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
+                <div className="text-sm font-medium text-gray-600 mb-2">Jährlich</div>
+                <div className="text-2xl font-bold text-purple-800">€{costs.yearly}</div>
+                <div className="text-xs text-purple-600 mt-1">365 Tage</div>
               </div>
-              <div className="bg-green-50 p-3 rounded-lg mt-3">
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-green-50 p-4 rounded-xl border border-green-200">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-green-700">Ersparnis vs. Gas</span>
+                  <span className="text-sm font-medium text-green-700">Ersparnis vs. Gas</span>
                   <span className="font-bold text-green-800">€{Math.round(costs.monthly * 1.8)} /Monat</span>
                 </div>
               </div>
               {pvSystem && (
-                <div className="bg-yellow-50 p-3 rounded-lg">
+                <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-yellow-700">Mit PV-Anlage</span>
+                    <span className="text-sm font-medium text-yellow-700">Mit PV-Anlage</span>
                     <span className="font-bold text-yellow-800">-70% Stromkosten</span>
                   </div>
                 </div>
@@ -872,102 +973,120 @@ const VaillantHeatPumpVisualizer = () => {
 
         {/* Erweiterte KPIs für Experten */}
         {content.kpis.includes('advanced_efficiency') && (
-          <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-blue-500">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Gauge className="w-5 h-5 text-blue-500" />
+          <div className="kpi-card card-primary animate-fade-in">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <Gauge className="w-6 h-6 text-blue-500" />
               Erweiterte Effizienz-Analyse
             </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-blue-50 p-3 rounded-lg">
-                <div className="text-sm text-blue-600 mb-1">COP (aktuell)</div>
-                <div className="text-xl font-bold text-blue-800">{calculateAdvancedCOP()}</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                <div className="text-sm text-blue-600 mb-2 font-medium">COP (aktuell)</div>
+                <div className="text-2xl font-bold text-blue-800">{calculateAdvancedCOP()}</div>
+                <div className="text-xs text-blue-600 mt-1">Coefficient of Performance</div>
               </div>
-              <div className="bg-purple-50 p-3 rounded-lg">
-                <div className="text-sm text-purple-600 mb-1">JAZ (geschätzt)</div>
-                <div className="text-xl font-bold text-purple-800">{(calculateAdvancedCOP() * 0.85).toFixed(1)}</div>
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
+                <div className="text-sm text-purple-600 mb-2 font-medium">JAZ (geschätzt)</div>
+                <div className="text-2xl font-bold text-purple-800">{(calculateAdvancedCOP() * 0.85).toFixed(1)}</div>
+                <div className="text-xs text-purple-600 mt-1">Jahresarbeitszahl</div>
               </div>
-              <div className="bg-green-50 p-3 rounded-lg">
-                <div className="text-sm text-green-600 mb-1">Carnot-Effizienz</div>
-                <div className="text-xl font-bold text-green-800">{Math.round(calculateAdvancedCOP() / 6 * 100)}%</div>
+              <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                <div className="text-sm text-green-600 mb-2 font-medium">Carnot-Effizienz</div>
+                <div className="text-2xl font-bold text-green-800">{Math.round(calculateAdvancedCOP() / 6 * 100)}%</div>
+                <div className="text-xs text-green-600 mt-1">Theoretisches Maximum</div>
               </div>
-              <div className="bg-orange-50 p-3 rounded-lg">
-                <div className="text-sm text-orange-600 mb-1">Modulationsgrad</div>
-                <div className="text-xl font-bold text-orange-800">{Math.round(Math.min(100, (calculatePower() / heatingLoad) * 100))}%</div>
+              <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
+                <div className="text-sm text-orange-600 mb-2 font-medium">Modulationsgrad</div>
+                <div className="text-2xl font-bold text-orange-800">{Math.round(Math.min(100, (calculatePower() / heatingLoad) * 100))}%</div>
+                <div className="text-xs text-orange-600 mt-1">Aktuelle Auslastung</div>
               </div>
             </div>
-            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-              <div className="text-sm text-gray-600 mb-2">Einflussfaktoren:</div>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div>Temperaturhub: {Math.abs(outsideTemp - insideTemp)}K</div>
-                <div>Luftfeuchtigkeit: {humidity}% rH</div>
-                <div>Windeinfluss: +{Math.round((windSpeed * 2))}%</div>
-                <div>Abtauverluste: -{Math.round(Math.max(0, (5 - outsideTemp) * 2))}%</div>
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+              <div className="text-sm font-medium text-gray-700 mb-3">Einflussfaktoren:</div>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Temperaturhub:</span>
+                  <span className="font-semibold">{Math.abs(outsideTemp - insideTemp)}K</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Luftfeuchtigkeit:</span>
+                  <span className="font-semibold">{humidity}% rH</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Windeinfluss:</span>
+                  <span className="font-semibold text-green-600">+{Math.round((windSpeed * 2))}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Abtauverluste:</span>
+                  <span className="font-semibold text-red-600">-{Math.round(Math.max(0, (5 - outsideTemp) * 2))}%</span>
+                </div>
               </div>
             </div>
           </div>
         )}
 
         {content.kpis.includes('detailed_costs') && (
-          <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-green-500">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-green-500" />
+          <div className="kpi-card card-success animate-fade-in">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <Calculator className="w-6 h-6 text-green-500" />
               Detaillierte Kostenanalyse
             </h3>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 p-3 rounded-lg">
-                  <div className="text-sm text-blue-600 mb-1">Wärmebedarf</div>
-                  <div className="text-lg font-bold text-blue-800">{calculatePower()} kW</div>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                  <div className="text-sm text-blue-600 mb-2 font-medium">Wärmebedarf</div>
+                  <div className="text-2xl font-bold text-blue-800">{calculatePower()} kW</div>
+                  <div className="text-xs text-blue-600 mt-1">Heizleistung</div>
                 </div>
-                <div className="bg-orange-50 p-3 rounded-lg">
-                  <div className="text-sm text-orange-600 mb-1">Strombedarf</div>
-                  <div className="text-lg font-bold text-orange-800">{Math.round((calculatePower() / calculateAdvancedCOP()) * 100) / 100} kW</div>
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-xl border border-orange-200">
+                  <div className="text-sm text-orange-600 mb-2 font-medium">Strombedarf</div>
+                  <div className="text-2xl font-bold text-orange-800">{Math.round((calculatePower() / calculateAdvancedCOP()) * 100) / 100} kW</div>
+                  <div className="text-xs text-orange-600 mt-1">Elektrische Leistung</div>
                 </div>
               </div>
               
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-sm text-gray-600 mb-2">Kostenaufschlüsselung:</div>
-                <div className="space-y-2">
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="text-sm font-medium text-gray-700 mb-3">Kostenaufschlüsselung:</div>
+                <div className="space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span>Grundpreis Strom (tägl.)</span>
-                    <span>€{(0.35).toFixed(2)}</span>
+                    <span className="text-gray-600">Grundpreis Strom (tägl.)</span>
+                    <span className="font-semibold">€{(0.35).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>Verbrauchskosten</span>
-                    <span>€{(costs.daily - 0.35).toFixed(2)}</span>
+                    <span className="text-gray-600">Verbrauchskosten</span>
+                    <span className="font-semibold">€{(costs.daily - 0.35).toFixed(2)}</span>
                   </div>
                   {pvSystem && (
                     <>
                       <div className="flex justify-between text-sm text-green-600">
                         <span>PV-Eigenverbrauch (-70%)</span>
-                        <span>-€{((costs.daily - 0.35) * 0.7).toFixed(2)}</span>
+                        <span className="font-semibold">-€{((costs.daily - 0.35) * 0.7).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm text-green-600">
                         <span>Einspeisevergütung</span>
-                        <span>+€{(0.08 * calculatePower() * 0.3).toFixed(2)}</span>
+                        <span className="font-semibold">+€{(0.08 * calculatePower() * 0.3).toFixed(2)}</span>
                       </div>
                     </>
                   )}
-                  <hr className="my-2" />
-                  <div className="flex justify-between font-bold">
+                  <hr className="my-3" />
+                  <div className="flex justify-between font-bold text-lg">
                     <span>Gesamt täglich</span>
                     <span>€{costs.daily}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-yellow-50 p-3 rounded-lg">
-                <div className="text-sm text-yellow-700 mb-2">Vergleich Heizsysteme (jährlich):</div>
-                <div className="space-y-1 text-sm">
+              <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                <div className="text-sm font-medium text-yellow-700 mb-3">Vergleich Heizsysteme (jährlich):</div>
+                <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span>🔥 Gasheizung (80% Effizienz)</span>
-                    <span className="text-red-600">€{Math.round(costs.yearly * 2.2)}</span>
+                    <span className="text-gray-600">🔥 Gasheizung (80% Effizienz)</span>
+                    <span className="font-semibold text-red-600">€{Math.round(costs.yearly * 2.2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>🛢️ Ölheizung (75% Effizienz)</span>
-                    <span className="text-red-600">€{Math.round(costs.yearly * 2.5)}</span>
+                    <span className="text-gray-600">🛢️ Ölheizung (75% Effizienz)</span>
+                    <span className="font-semibold text-red-600">€{Math.round(costs.yearly * 2.5)}</span>
                   </div>
-                  <div className="flex justify-between font-bold">
+                  <div className="flex justify-between font-bold text-lg">
                     <span>⚡ Wärmepumpe</span>
                     <span className="text-green-600">€{costs.yearly}</span>
                   </div>
@@ -978,52 +1097,63 @@ const VaillantHeatPumpVisualizer = () => {
         )}
 
         {content.kpis.includes('environmental_analysis') && (
-          <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-green-500">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Leaf className="w-5 h-5 text-green-500" />
+          <div className="kpi-card card-success animate-fade-in">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <Leaf className="w-6 h-6 text-green-500" />
               Umwelt-Impact-Analyse
             </h3>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-green-50 p-3 rounded-lg">
-                  <div className="text-sm text-green-600 mb-1">CO₂-Faktor Strom</div>
-                  <div className="text-lg font-bold text-green-800">{pvSystem ? '0.05' : '0.40'} kg/kWh</div>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border border-green-200">
+                  <div className="text-sm text-green-600 mb-2 font-medium">CO₂-Faktor Strom</div>
+                  <div className="text-2xl font-bold text-green-800">{pvSystem ? '0.05' : '0.40'} kg/kWh</div>
+                  <div className="text-xs text-green-600 mt-1">{pvSystem ? 'Mit PV' : 'Strommix'}</div>
                 </div>
-                <div className="bg-blue-50 p-3 rounded-lg">
-                  <div className="text-sm text-blue-600 mb-1">Primärenergiefaktor</div>
-                  <div className="text-lg font-bold text-blue-800">{pvSystem ? '0.2' : '1.8'}</div>
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+                  <div className="text-sm text-blue-600 mb-2 font-medium">Primärenergiefaktor</div>
+                  <div className="text-2xl font-bold text-blue-800">{pvSystem ? '0.2' : '1.8'}</div>
+                  <div className="text-xs text-blue-600 mt-1">Energieeffizienz</div>
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-sm text-gray-600 mb-2">Jährliche CO₂-Bilanz:</div>
-                <div className="space-y-2">
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="text-sm font-medium text-gray-700 mb-3">Jährliche CO₂-Bilanz:</div>
+                <div className="space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span>Wärmepumpe (aktuell)</span>
-                    <span className="text-green-600">{Math.round(calculateCO2() * 365)} kg CO₂</span>
+                    <span className="text-gray-600">Wärmepumpe (aktuell)</span>
+                    <span className="font-semibold text-green-600">{Math.round(calculateCO2() * 365)} kg CO₂</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>Gasheizung (Vergleich)</span>
-                    <span className="text-red-600">{Math.round(calculateCO2() * 365 * 4.2)} kg CO₂</span>
+                    <span className="text-gray-600">Gasheizung (Vergleich)</span>
+                    <span className="font-semibold text-red-600">{Math.round(calculateCO2() * 365 * 4.2)} kg CO₂</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span>Ölheizung (Vergleich)</span>
-                    <span className="text-red-600">{Math.round(calculateCO2() * 365 * 4.8)} kg CO₂</span>
+                    <span className="text-gray-600">Ölheizung (Vergleich)</span>
+                    <span className="font-semibold text-red-600">{Math.round(calculateCO2() * 365 * 4.8)} kg CO₂</span>
                   </div>
-                  <hr className="my-2" />
-                  <div className="flex justify-between font-bold text-green-600">
+                  <hr className="my-3" />
+                  <div className="flex justify-between font-bold text-lg text-green-600">
                     <span>Einsparung vs. Gas</span>
                     <span>-{Math.round(calculateCO2() * 365 * 3.2)} kg CO₂</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-blue-50 p-3 rounded-lg">
-                <div className="text-sm text-blue-700 mb-2">Kältemittel (R32):</div>
-                <div className="space-y-1 text-xs">
-                  <div>GWP-Wert: 675 (niedrig)</div>
-                  <div>Füllmenge: ~{Math.round(calculatePower() * 0.15)} kg</div>
-                  <div>CO₂-Äquivalent: {Math.round(calculatePower() * 0.15 * 675 / 1000)} t</div>
+              <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                <div className="text-sm font-medium text-blue-700 mb-3">Kältemittel (R32):</div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">GWP-Wert:</span>
+                    <span className="font-semibold">675 (niedrig)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Füllmenge:</span>
+                    <span className="font-semibold">~{Math.round(calculatePower() * 0.15)} kg</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">CO₂-Äquivalent:</span>
+                    <span className="font-semibold">{Math.round(calculatePower() * 0.15 * 675 / 1000)} t</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1031,42 +1161,66 @@ const VaillantHeatPumpVisualizer = () => {
         )}
 
         {content.kpis.includes('performance_metrics') && (
-          <div className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-purple-500">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Award className="w-5 h-5 text-purple-500" />
+          <div className="kpi-card card-info animate-fade-in">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <Award className="w-6 h-6 text-purple-500" />
               Performance-Metriken
             </h3>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-purple-50 p-3 rounded-lg">
-                  <div className="text-sm text-purple-600 mb-1">SCOP (Seasonal)</div>
-                  <div className="text-lg font-bold text-purple-800">{(calculateAdvancedCOP() * 0.82).toFixed(1)}</div>
-                  <div className="text-xs text-purple-600">A+++ Effizienz</div>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
+                  <div className="text-sm text-purple-600 mb-2 font-medium">SCOP (Seasonal)</div>
+                  <div className="text-2xl font-bold text-purple-800">{(calculateAdvancedCOP() * 0.82).toFixed(1)}</div>
+                  <div className="text-xs text-purple-600 mt-1">A+++ Effizienz</div>
                 </div>
-                <div className="bg-indigo-50 p-3 rounded-lg">
-                  <div className="text-sm text-indigo-600 mb-1">Schallpegel</div>
-                  <div className="text-lg font-bold text-indigo-800">{Math.round(35 + calculatePower())} dB(A)</div>
-                  <div className="text-xs text-indigo-600">@ 3m Abstand</div>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-sm text-gray-600 mb-2">Betriebsgrenzen:</div>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div>Min. Außentemp.: -20°C</div>
-                  <div>Max. Außentemp.: +35°C</div>
-                  <div>Min. Vorlauftemp.: 25°C</div>
-                  <div>Max. Vorlauftemp.: 75°C</div>
+                <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 rounded-xl border border-indigo-200">
+                  <div className="text-sm text-indigo-600 mb-2 font-medium">Schallpegel</div>
+                  <div className="text-2xl font-bold text-indigo-800">{Math.round(35 + calculatePower())} dB(A)</div>
+                  <div className="text-xs text-indigo-600 mt-1">@ 3m Abstand</div>
                 </div>
               </div>
 
-              <div className="bg-orange-50 p-3 rounded-lg">
-                <div className="text-sm text-orange-700 mb-2">Optimierungspotential:</div>
-                <div className="space-y-1 text-xs">
-                  {outsideTemp < 0 && <div>• Abtauzyklen optimieren</div>}
-                  {Math.abs(outsideTemp - insideTemp) > 25 && <div>• Vorlauftemperatur reduzieren</div>}
-                  {!pvSystem && <div>• PV-Anlage für Eigenverbrauch</div>}
-                  {houseSize > 200 && <div>• Zonierung für Teillastbetrieb</div>}
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="text-sm font-medium text-gray-700 mb-3">Betriebsgrenzen:</div>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Min. Außentemp.:</span>
+                    <span className="font-semibold">-20°C</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Max. Außentemp.:</span>
+                    <span className="font-semibold">+35°C</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Min. Vorlauftemp.:</span>
+                    <span className="font-semibold">25°C</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Max. Vorlauftemp.:</span>
+                    <span className="font-semibold">75°C</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-orange-50 p-4 rounded-xl border border-orange-200">
+                <div className="text-sm font-medium text-orange-700 mb-3">Optimierungspotential:</div>
+                <div className="space-y-2 text-sm">
+                  {outsideTemp < 0 && <div className="flex items-center gap-2">
+                    <span className="text-orange-600">•</span>
+                    <span>Abtauzyklen optimieren</span>
+                  </div>}
+                  {Math.abs(outsideTemp - insideTemp) > 25 && <div className="flex items-center gap-2">
+                    <span className="text-orange-600">•</span>
+                    <span>Vorlauftemperatur reduzieren</span>
+                  </div>}
+                  {!pvSystem && <div className="flex items-center gap-2">
+                    <span className="text-orange-600">•</span>
+                    <span>PV-Anlage für Eigenverbrauch</span>
+                  </div>}
+                  {houseSize > 200 && <div className="flex items-center gap-2">
+                    <span className="text-orange-600">•</span>
+                    <span>Zonierung für Teillastbetrieb</span>
+                  </div>}
                 </div>
               </div>
             </div>
@@ -1074,22 +1228,22 @@ const VaillantHeatPumpVisualizer = () => {
         )}
 
         {/* Call-to-Action basierend auf Zielgruppe */}
-        <div className={`rounded-xl p-6 text-white shadow-lg ${
+        <div className={`kpi-card animate-fade-in ${
           targetAudience === 'kids' ? 'bg-gradient-to-r from-purple-400 to-pink-400' :
           targetAudience === 'adults' ? 'bg-gradient-to-r from-red-500 to-red-600' :
           'bg-gradient-to-r from-blue-600 to-indigo-700'
         }`}>
-          <h3 className="text-lg font-bold mb-2 flex items-center gap-2">
+          <h3 className="text-xl font-bold mb-4 flex items-center gap-3 text-white">
             {targetAudience === 'kids' ? '🎉 Super cool!' : 
              targetAudience === 'adults' ? '💡 Überzeugt?' :
              '🎯 Interesse geweckt?'}
           </h3>
-          <p className="text-sm mb-4 opacity-90">
+          <p className="text-base mb-6 opacity-90 text-white">
             {targetAudience === 'kids' ? 'Erzähl deinen Eltern von der tollen Wärmepumpe!' :
              targetAudience === 'adults' ? 'Lassen Sie sich unverbindlich von einem Vaillant Partner beraten!' :
              'Detaillierte Systemauslegung durch zertifizierte Vaillant Fachpartner.'}
           </p>
-          <button className="w-full bg-white font-bold py-3 px-4 rounded-lg hover:bg-opacity-90 transition-all transform hover:scale-105">
+          <button className="btn-modern w-full bg-white">
             <span className={`${
               targetAudience === 'kids' ? 'text-purple-600' :
               targetAudience === 'adults' ? 'text-red-600' :
@@ -1119,27 +1273,27 @@ const VaillantHeatPumpVisualizer = () => {
             </div>
           
             {/* Navigation Tabs wie EnergieExpert */}
-            <div className="flex space-x-1">
+            <div className="flex space-x-2">
               <button 
                 onClick={() => setTargetAudience('adults')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  targetAudience === 'adults' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:text-white hover:bg-slate-800'
+                className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all ${
+                  targetAudience === 'adults' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-slate-800'
                 }`}
               >
                 Haushalt
               </button>
               <button 
                 onClick={() => setTargetAudience('kids')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  targetAudience === 'kids' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:text-white hover:bg-slate-800'
+                className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all ${
+                  targetAudience === 'kids' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-slate-800'
                 }`}
               >
                 Kinder
               </button>
               <button 
                 onClick={() => setTargetAudience('experts')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  targetAudience === 'experts' ? 'bg-blue-600 text-white' : 'text-slate-700 hover:text-white hover:bg-slate-800'
+                className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all ${
+                  targetAudience === 'experts' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-slate-800'
                 }`}
               >
                 Experten
@@ -1167,10 +1321,10 @@ const VaillantHeatPumpVisualizer = () => {
           </div>
           {/* Content Grid wie EnergieExpert */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Control Panel - EnergieExpert Style */}
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200">
-              <h3 className="text-lg font-bold mb-4 text-slate-900 flex items-center gap-2">
-                <Settings className="w-5 h-5 text-slate-600" />
+            {/* Control Panel - Verbesserte Version */}
+            <div className="card-modern card-primary animate-slide-in">
+              <h3 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-3">
+                <Settings className="w-6 h-6 text-indigo-500" />
                 {targetAudience === 'kids' ? 'Spiel-Regler' :
                  targetAudience === 'adults' ? 'Einstellungen' :
                  'System-Parameter'}
@@ -1179,10 +1333,10 @@ const VaillantHeatPumpVisualizer = () => {
               {renderParameters()}
             </div>
 
-            {/* Main Visualization - EnergieExpert Style */}
-            <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-lg border border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-slate-900">
+            {/* Main Visualization - Verbesserte Version */}
+            <div className="lg:col-span-2 card-modern card-info animate-slide-in">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-gray-800">
                   {targetAudience === 'kids' ? '🔮 Wie es funktioniert' :
                    targetAudience === 'adults' ? 'Funktionsweise' :
                    'System-Schaltbild'}
