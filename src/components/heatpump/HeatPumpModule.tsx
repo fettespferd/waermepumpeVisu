@@ -88,6 +88,33 @@ function calculateThermalPowerKw(params: {
 
 type OperatingMode = 'heating' | 'cooling' | 'dhw'
 
+// Kleine Hilfskomponenten für schöne Formeldarstellung ohne externe Lib
+const Fraction: React.FC<{ numerator: React.ReactNode; denominator: React.ReactNode }> = ({ numerator, denominator }) => (
+  <span className="inline-flex flex-col items-center align-middle mx-1">
+    <span className="border-b border-current leading-4 px-1">{numerator}</span>
+    <span className="leading-4 px-1">{denominator}</span>
+  </span>
+)
+
+const FormulaBox: React.FC = () => (
+  <div className="mt-2 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-3 py-2 text-[13px] text-gray-800 dark:text-gray-200 font-mono">
+    <div className="whitespace-pre-wrap">
+      <span className="mr-1">COP</span>
+      <sub>heizen</sub>
+      <span className="mx-1">≈</span>
+      <span className="mx-1">η ·</span>
+      <Fraction numerator={<><span>T</span><sub>hot</sub></>} denominator={<><span>T</span><sub>hot</sub> <span>−</span> <span>T</span><sub>cold</sub></>} />
+    </div>
+    <div className="whitespace-pre-wrap mt-1">
+      <span className="mr-1">EER</span>
+      <sub>kühlen</sub>
+      <span className="mx-1">≈</span>
+      <span className="mx-1">η ·</span>
+      <Fraction numerator={<><span>T</span><sub>cold</sub></>} denominator={<><span>T</span><sub>hot</sub> <span>−</span> <span>T</span><sub>cold</sub></>} />
+    </div>
+  </div>
+)
+
 const HeatPumpModule: React.FC = () => {
   // UI-Zustände (an die Doku angelehnt)
   const [model, setModel] = useState<HeatPumpModel>('aroTHERM')
@@ -433,6 +460,7 @@ const HeatPumpModule: React.FC = () => {
             />
           </div>
 
+
           {/* Zusatzdiagramme */}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
             <LineChart
@@ -452,6 +480,100 @@ const HeatPumpModule: React.FC = () => {
               color="#34d399"
               title="Verbrauchsverteilung (24h)"
             />
+          </div>
+          {/* Info-/Detail-Block (am Seitenende, kein Markdown) */}
+          <div className="mt-8 bg-white dark:bg-gray-800 rounded-2xl shadow p-6 sm:p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl">ℹ️</span>
+              <h2 className="m-0 text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100">Wärmepumpe – Funktionsweise, Modellierung & Regularien</h2>
+            </div>
+
+            <p className="text-gray-700 dark:text-gray-300 mb-6">
+              Diese Ansicht veranschaulicht Vaillant‑Wärmepumpen (z. B. <span className="font-semibold">aroTHERM</span>, <span className="font-semibold">geoTHERM</span>, <span className="font-semibold">flexoTHERM</span>) anhand
+              technisch motivierter, vereinfachter Modelle. Ziel ist Orientierung: Welche Parameter beeinflussen Effizienz (COP/EER), Leistung,
+              Kosten und CO₂? Die Darstellung ist didaktisch und ersetzt keine verbindliche Auslegung.
+            </p>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {/* Betriebsarten */}
+              <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span>🧭</span>
+                  <h3 className="m-0 text-base font-semibold">Betriebsarten</h3>
+                </div>
+                <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 list-none m-0 p-0">
+                  <li>🔥 <span className="font-medium">Heizen</span>: Umweltwärme (Luft/Erde) → Anhebung auf Vorlauf → Heizkreis</li>
+                  <li>❄️ <span className="font-medium">Kühlen</span>: Umgekehrter Prozess (EER) → Wärmeabfuhr an die Umgebung</li>
+                  <li>🚿 <span className="font-medium">Warmwasser</span>: Vorrangladung auf Zieltemperatur, Verbrauchsnähe über Personen</li>
+                </ul>
+              </div>
+
+              {/* Berechnungsmodell */}
+              <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span>🧮</span>
+                  <h3 className="m-0 text-base font-semibold">Berechnungsmodell</h3>
+                </div>
+                <p className="text-sm text-gray-700 dark:text-gray-300 m-0">
+                  Quasi‑Carnot mit modellabhängigem Gütegrad und Luftkorrekturen (Feuchte/Wind):
+                </p>
+                <FormulaBox />
+                <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 mt-2 list-none m-0 p-0">
+                  <li>🏠 Gebäudelast (UA): U·A·ΔT über Qualität (Altbau/Standard/Effizienz) und Fläche</li>
+                  <li>⚡ Strom/Kosten/CO₂: P_el = P_therm / COP; Kosten = P_el·Zeit·Preis; PV reduziert Kosten/CO₂</li>
+                </ul>
+              </div>
+
+              {/* Einflussgrößen */}
+              <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span>🎛️</span>
+                  <h3 className="m-0 text-base font-semibold">Wichtige Einflussgrößen</h3>
+                </div>
+                <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 list-none m-0 p-0">
+                  <li>🌡️ Außen‑/Innen‑ und Vorlauf‑Temperatur steuern COP und Bedarf am stärksten</li>
+                  <li>🧱 Gebäude‑Qualität & Hausgröße skalieren die Last</li>
+                  <li>🔧 Modellwahl: Luft (aroTHERM), Sole/Geo (geoTHERM), Multisource/Hybrid (flexoTHERM)</li>
+                  <li>☀️/💶 PV‑Anteil und Strompreis prägen Betriebskosten und CO₂</li>
+                </ul>
+              </div>
+
+              {/* Normen */}
+              <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span>📐</span>
+                  <h3 className="m-0 text-base font-semibold">Normen & Praxis</h3>
+                </div>
+                <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 list-none m-0 p-0">
+                  <li>EN 14511 (Leistungszahlen), EN 12102 (Schall)</li>
+                  <li>ErP‑Richtlinie (Effizienz/Label), EU F‑Gase (Kältemittel, Leckagekontrolle)</li>
+                  <li>Planung: niedrige Vorlauftemperaturen, Hydraulik/Schall, Kondensatführung, bivalente Strategien</li>
+                </ul>
+              </div>
+
+              {/* Hinweise */}
+              <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span>🔎</span>
+                  <h3 className="m-0 text-base font-semibold">Hinweise</h3>
+                </div>
+                <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300 list-none m-0 p-0">
+                  <li>Didaktische Näherungen; für Auslegung bitte Herstellerunterlagen, VDI‑/VD‑Richtlinien nutzen</li>
+                  <li>JAZ hängt stark von Regelung, Quell‑/Vorlauf‑Temperatur, Hydraulik und Nutzerprofilen ab</li>
+                </ul>
+              </div>
+
+              {/* Vaillant Hinweis */}
+              <div className="rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span>🏷️</span>
+                  <h3 className="m-0 text-base font-semibold">Vaillant</h3>
+                </div>
+                <p className="text-sm text-gray-700 dark:text-gray-300 m-0">
+                  Für konkrete Projekte bitte Kennlinien, Schallangaben, Hydraulikschemata und Auslegungstools nutzen.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
